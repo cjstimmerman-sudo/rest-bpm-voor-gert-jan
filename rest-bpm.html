@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rest-BPM Calculator — Broekhuis</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f4f4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header img {
+      height: 40px;
+      object-fit: contain;
+    }
+
+    header .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+      border-left: 2px solid #e0e0e0;
+      padding-left: 16px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 620px;
+      padding: 32px 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .card-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fafafa;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #c00;
+      background: #fff;
+    }
+
+    .kenteken-input {
+      font-size: 22px !important;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      background: #fffbe6 !important;
+      border-color: #f0c400 !important;
+    }
+
+    .kenteken-input:focus {
+      border-color: #c00 !important;
+    }
+
+    button.primary {
+      width: 100%;
+      padding: 12px;
+      background: #c00;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: background 0.15s;
+    }
+
+    button.primary:hover { background: #a00; }
+
+    button.secondary {
+      padding: 9px 18px;
+      background: #fff;
+      color: #c00;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid #c00;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      margin-top: 12px;
+    }
+
+    button.secondary:hover { background: #fff0f0; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+
+    .stat {
+      background: #f7f7f7;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat .stat-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+    .stat .stat-value { font-size: 22px; font-weight: 700; color: #222; }
+    .stat.highlight .stat-value { color: #c00; }
+
+    .voertuig-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .voertuig-row:last-child { border-bottom: none; }
+    .voertuig-row .key { color: #888; }
+    .voertuig-row .val { font-weight: 600; color: #222; }
+
+    .uitleg {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.7;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .fout {
+      background: #fff0f0;
+      border: 1px solid #fcc;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #c00;
+      margin-bottom: 12px;
+    }
+
+    .laden {
+      font-size: 14px;
+      color: #888;
+      padding: 10px 0;
+    }
+
+    .hidden { display: none; }
+
+    footer {
+      margin-top: 32px;
+      font-size: 12px;
+      color: #aaa;
+      text-align: center;
+      padding-bottom: 32px;
+    }
+
+    @media (max-width: 480px) {
+      .grid2, .grid3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Broekhuis_Groep_logo.svg/320px-Broekhuis_Groep_logo.svg.png"
+    alt="Broekhuis logo"
+    onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+  />
+  <span id="logo-fallback" style="display:none; font-size:20px; font-weight:700; color:#c00;">Broekhuis</span>
+  <span class="title">Rest-BPM Calculator</span>
+</header>
+
+<main>
+
+  <div class="card">
+    <div class="card-label">Stap 1 — Kenteken opzoeken</div>
+    <label for="kenteken">Voer het kenteken in</label>
+    <input
+      type="text"
+      id="kenteken"
+      class="kenteken-input"
+      placeholder="12AB34"
+      maxlength="8"
+      oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+      onkeydown="if(event.key==='Enter') zoekKenteken()"
+    />
+    <button class="primary" onclick="zoekKenteken()">🔍 Kenteken opzoeken (RDW)</button>
+  </div>
+
+  <div id="laden" class="hidden laden">⏳ RDW wordt geraadpleegd…</div>
+  <div id="fout" class="fout hidden"></div>
+
+  <div id="voertuig-kaart" class="card hidden">
+    <div class="card-label">Voertuiggegevens (RDW)</div>
+    <div id="voertuig-details"></div>
+
+    <div style="margin-top: 18px;">
+      <label for="origineel_bpm">Oorspronkelijk BPM-bedrag (€) <span style="color:#888; font-weight:400;">— staat op kentekenbewijsdeel I</span></label>
+      <input type="number" id="origineel_bpm" placeholder="bv. 8500" min="0" />
+      <button class="primary" onclick="berekenBPM()">📊 Bereken rest-BPM</button>
+    </div>
+  </div>
+
+  <div id="resultaat" class="card hidden">
+    <div class="card-label">Rest-BPM Resultaat</div>
+    <div class="grid3">
+      <div class="stat">
+        <div class="stat-label">Leeftijd</div>
+        <div class="stat-value" id="res-leeftijd">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Afschrijving</div>
+        <div class="stat-value" id="res-perc">—</div>
+      </div>
+      <div class="stat highlight">
+        <div class="stat-label">Rest-BPM</div>
+        <div class="stat-value" id="res-bpm">—</div>
+      </div>
+    </div>
+    <div class="uitleg" id="uitleg-blok"></div>
+    <button class="secondary" onclick="opnieuw()">↩ Nieuw kenteken</button>
+  </div>
+
+</main>
+
+<footer>
+  Berekening op basis van Belastingdienst afschrijvingstabellen 2025 · RDW Open Data · Broekhuis &copy; 2025
+</footer>
+
+<script>
+const afschrijvingBenzine = [
+  [0,1,0],[1,2,9],[2,3,18],[3,4,27],[4,5,34],[5,6,40],[6,7,46],[7,8,52],
+  [8,9,57],[9,10,61],[10,11,65],[11,12,68],[12,13,70],[13,14,73],[14,15,75],
+  [15,16,77],[16,17,79],[17,18,81],[18,19,82],[19,20,84],[20,21,85],
+  [21,22,86],[22,23,88],[23,24,89],[24,25,90],[25,999,100]
+];
+const afschrijvingElektrisch = [
+  [0,1,0],[1,2,6],[2,3,12],[3,4,18],[4,5,24],[5,6,30],[6,7,35],[7,8,40],
+  [8,9,45],[9,10,50],[10,11,54],[11,12,58],[12,13,62],[13,14,66],[14,15,70],
+  [15,16,73],[16,17,76],[17,18,79],[18,19,82],[19,20,85],[20,999,100]
+];
+
+function getAfschrijving(maanden, type) {
+  const tabel = type === 'elektrisch' ? afschrijvingElektrisch : afschrijvingBenzine;
+  const jaren = maanden / 12;
+  for (const [van, tot, perc] of tabel) {
+    if (jaren >= van && jaren < tot) return perc;
+  }
+  return 100;
+}
+
+function maandenTussen(d1, d2) {
+  return (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+}
+
+function toonFout(tekst) {
+  const el = document.getElementById('fout');
+  el.textContent = tekst;
+  el.classList.remove('hidden');
+}
+
+function verbergFout() {
+  document.getElementById('fout').classList.add('hidden');
+}
+
+window._voertuig = {};
+
+async function zoekKenteken() {
+  const raw = document.getElementById('kenteken').value.replace(/-/g, '').toUpperCase();
+  if (raw.length < 4) { toonFout('Vul een geldig kenteken in.'); return; }
+
+  verbergFout();
+  document.getElementById('voertuig-kaart').classList.add('hidden');
+  document.getElementById('resultaat').classList.add('hidden');
+  document.getElementById('laden').classList.remove('hidden');
+
+  try {
+    const res = await fetch(`https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${raw}`);
+    const data = await res.json();
+    document.getElementById('laden').classList.add('hidden');
+
+    if (!data || data.length === 0) {
+      toonFout(`Kenteken "${raw}" niet gevonden in het RDW-register.`);
+      return;
+    }
+
+    const v = data[0];
+    const merk = ((v.merk || '') + ' ' + (v.handelsbenaming || '')).trim();
+    const brandstofRaw = (v.brandstof_omschrijving || '').toLowerCase();
+    let brandstofType = 'benzine';
+    if (brandstofRaw.includes('elektr')) brandstofType = 'elektrisch';
+    else if (brandstofRaw.includes('hybr')) brandstofType = 'hybride';
+    const brandstofLabel = v.brandstof_omschrijving || '—';
+
+    const datumRaw = v.datum_eerste_toelating || '';
+    let datumObj = null, datumFormatted = '—';
+    if (datumRaw.length === 8) {
+      datumObj = new Date(`${datumRaw.slice(0,4)}-${datumRaw.slice(4,6)}-${datumRaw.slice(6,8)}`);
+      datumFormatted = datumObj.toLocaleDateString('nl-NL');
+    }
+
+    const catalogusRaw = v.catalogusprijs ? parseInt(v.catalogusprijs) : null;
+    const catalogusFormatted = catalogusRaw ? `€ ${catalogusRaw.toLocaleString('nl-NL')}` : 'Niet beschikbaar';
+
+    document.getElementById('voertuig-details').innerHTML = `
+      <div class="voertuig-row"><span class="key">Merk / Model</span><span class="val">${merk || '—'}</span></div>
+      <div class="voertuig-row"><span class="key">Brandstof</span><span class="val">${brandstofLabel}</span></div>
+      <div class="voertuig-row"><span class="key">Datum eerste toelating</span><span class="val">${datumFormatted}</span></div>
+      <div class="voertuig-row"><span class="key">Catalogusprijs (RDW)</span><span class="val">${catalogusFormatted}</span></div>
+    `;
+
+    document.getElementById('voertuig-kaart').classList.remove('hidden');
+    window._voertuig = { datumObj, brandstofType, brandstofLabel, merk, kenteken: raw };
+
+  } catch(e) {
+    document.getElementById('laden').classList.add('hidden');
+    toonFout('Fout bij ophalen RDW-gegevens. Controleer uw internetverbinding.');
+  }
+}
+
+function berekenBPM() {
+  verbergFout();
+  const origBPM = parseFloat(document.getElementById('origineel_bpm').value);
+  const { datumObj, brandstofType, brandstofLabel, merk, kenteken } = window._voertuig;
+
+  if (!datumObj) { toonFout('Geen datum eerste toelating beschikbaar.'); return; }
+  if (isNaN(origBPM) || origBPM <= 0) { toonFout('Vul het oorspronkelijke BPM-bedrag in.'); return; }
+
+  const vandaag = new Date();
+  const maanden = maandenTussen(datumObj, vandaag);
+  if (maanden < 0) { toonFout('Datum eerste toelating ligt in de toekomst.'); return; }
+
+  const jaren = Math.floor(maanden / 12);
+  const restMaanden = maanden % 12;
+  const afschrijvingPerc = getAfschrijving(maanden, brandstofType);
+  const restPerc = 100 - afschrijvingPerc;
+  const restBPM = Math.round(origBPM * restPerc / 100);
+
+  const leeftijdTekst = jaren > 0
+    ? `${jaren} jr${restMaanden > 0 ? ` ${restMaanden} mnd` : ''}`
+    : `${maanden} mnd`;
+
+  document.getElementById('res-leeftijd').textContent = leeftijdTekst;
+  document.getElementById('res-perc').textContent = `${afschrijvingPerc}%`;
+  document.getElementById('res-bpm').textContent = `€ ${restBPM.toLocaleString('nl-NL')}`;
+  document.getElementById('uitleg-blok').innerHTML =
+    `<strong>${kenteken}</strong> — ${merk || 'onbekend'}. Leeftijd: ${leeftijdTekst}, brandstof: ${brandstofLabel}. ` +
+    `Afschrijving (Belastingdienst 2025): <strong>${afschrijvingPerc}%</strong>. ` +
+    `Rest-BPM = ${restPerc}% × € ${Math.round(origBPM).toLocaleString('nl-NL')} = <strong>€ ${restBPM.toLocaleString('nl-NL')}</strong>.`;
+
+  document.getElementById('resultaat').classList.remove('hidden');
+  document.getElementById('resultaat').scrollIntoView({ behavior: 'smooth' });
+}
+
+function opnieuw() {
+  document.getElementById('kenteken').value = '';
+  document.getElementById('origineel_bpm').value = '';
+  document.getElementById('voertuig-kaart').classList.add('hidden');
+  document.getElementById('resultaat').classList.add('hidden');
+  verbergFout();
+  document.getElementById('kenteken').focus();
+}
+</script>
+</body>
+</html>
