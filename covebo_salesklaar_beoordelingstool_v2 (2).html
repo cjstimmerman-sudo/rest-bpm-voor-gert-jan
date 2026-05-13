@@ -1,0 +1,288 @@
+
+<h2 class="sr-only">Salesklaar beoordelingstool voor EU-lassers bij Covebo Almelo — versie 2 met gecorrigeerde factoren</h2>
+<style>
+.sc-screen{display:none}.sc-screen.active{display:block}
+.sc-prog{height:4px;background:var(--color-border-tertiary);border-radius:2px;margin-bottom:20px}
+.sc-prog-fill{height:100%;background:#1D9E75;border-radius:2px;transition:width .3s}
+.sc-section-tag{font-size:11px;font-weight:500;letter-spacing:.04em;margin-bottom:4px}
+.sc-q-counter{font-size:11px;color:var(--color-text-tertiary);margin-bottom:14px}
+.sc-card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:12px;padding:18px;margin-bottom:14px}
+.sc-q-text{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px;line-height:1.5}
+.sc-q-note{font-size:11px;color:var(--color-text-tertiary);margin-bottom:12px;line-height:1.5;font-style:italic;padding:8px 10px;background:var(--color-background-secondary);border-radius:6px}
+.sc-opts{display:flex;flex-direction:column;gap:7px}
+.sc-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:.5px solid var(--color-border-tertiary);border-radius:8px;cursor:pointer;transition:background .12s}
+.sc-opt:hover{background:var(--color-background-secondary)}
+.sc-opt.sel{border-color:#1D9E75;background:#E1F5EE}
+.sc-opt.sel-warn{border-color:#BA7517;background:#FAEEDA}
+.sc-opt.sel-nogo{border-color:#E24B4A;background:#FCEBEB}
+.sc-opt input{margin-top:3px;flex-shrink:0;accent-color:#1D9E75;width:14px;height:14px}
+.sc-opt-lbl{font-size:13px;color:var(--color-text-primary);line-height:1.4}
+.sc-opt-sub{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.sc-navs{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.sc-btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary)}
+.sc-btn:hover{background:var(--color-background-secondary)}
+.sc-btn-p{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.sc-btn-p:hover{background:#0F6E56}
+.sc-btn-p:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);border-color:var(--color-border-tertiary);cursor:not-allowed}
+.sc-bar{height:6px;background:var(--color-border-tertiary);border-radius:3px;margin-top:4px;overflow:hidden}
+.sc-bar-fill{height:100%;border-radius:3px}
+.sc-nogo-flag{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;background:#FCEBEB;border-radius:0;border-left:3px solid #E24B4A;margin-bottom:6px}
+.sc-warn-flag{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;background:#FAEEDA;border-radius:0;border-left:3px solid #BA7517;margin-bottom:6px}
+.sc-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:1px}
+</style>
+
+<div id="sc-intro" class="sc-screen active" style="max-width:560px;margin:0 auto;padding:8px 0">
+  <div style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Salesklaar beoordelingstool</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:20px;line-height:1.6">Beantwoord 20 vragen over de kandidaat op basis van het gesprek, het cv en de beschikbare documentatie. De tool geeft aan het einde een advies: niet voorstellen, bestaande klant of nieuwe prospect.</div>
+  <div style="background:var(--color-background-secondary);border-radius:12px;padding:16px;margin-bottom:20px">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">Hoe de scoring werkt</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:18px;height:18px;background:#E24B4A;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff">1</div><div style="font-size:12px;color:var(--color-text-secondary)">No-go check: arrogantie, drankverleden en cv-stabiliteit worden getoetst. No-go's blokkeren het eindadvies ongeacht de overige scores</div></div>
+      <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:18px;height:18px;background:#185FA5;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff">2</div><div style="font-size:12px;color:var(--color-text-secondary)">Technische validatie (40 pt), communicatie (35 pt) en sociale stabiliteit (25 pt) worden gewogen gescoord</div></div>
+      <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:18px;height:18px;background:#1D9E75;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff">3</div><div style="font-size:12px;color:var(--color-text-secondary)">Het advies verschijnt aan het einde met scoreoverzicht per sectie en toelichting op flagged antwoorden</div></div>
+    </div>
+  </div>
+  <button class="sc-btn sc-btn-p" onclick="scStart()" style="width:100%">Start beoordeling</button>
+</div>
+
+<div id="sc-qs" class="sc-screen" style="max-width:560px;margin:0 auto;padding:8px 0">
+  <div class="sc-prog"><div class="sc-prog-fill" id="sc-pf" style="width:5%"></div></div>
+  <div class="sc-section-tag" id="sc-sec"></div>
+  <div class="sc-q-counter" id="sc-cnt"></div>
+  <div id="sc-qc"></div>
+  <div class="sc-navs">
+    <button class="sc-btn" id="sc-prev" onclick="scPrev()">Vorige</button>
+    <button class="sc-btn sc-btn-p" id="sc-next" onclick="scNext()" disabled>Volgende</button>
+  </div>
+</div>
+
+<div id="sc-res" class="sc-screen" style="max-width:560px;margin:0 auto;padding:8px 0">
+  <div id="sc-rc"></div>
+</div>
+
+<script>
+const Q=[
+  {sec:'No-go check',sc:'#E24B4A',t:'Vertoont de kandidaat arrogantie, agressie of onwil om feedback te accepteren?',n:'Signalen: denkt alles te weten, luistert niet naar ervaren collega\'s, defensief op kritiek. Bedrijf 2: "Als je denkt dat je alles weet zonder te luisteren naar de ervaren jongens, dan pas je niet in de groep." 4 van 5 bedrijven noemen arrogantie als directe afwijzingsgrond.',type:'nogo',nl:'Arrogantie / agressie aanwezig',opts:[
+    {l:'Nee, geen signalen',s:'',v:0,ng:false},
+    {l:'Lichte signalen, twijfelachtig',s:'Noteer als aandachtspunt',v:-5,ng:false,w:true},
+    {l:'Ja, duidelijk aanwezig',s:'Directe no-go',v:0,ng:true}
+  ]},
+  {sec:'No-go check',sc:'#E24B4A',t:'Zijn er signalen van een drankverleden of problematisch drankgebruik bij de kandidaat?',n:'Signalen zijn onder andere: sterke dranklucht, zichtbare gevolgen van langdurig gebruik, of vermeldingen door het wervingskantoor. Let op: drankmisbruik kan ook zichtbaar worden in het gedragspatroon op de werkvloer. Bedrijf 3 en 4 benoemen dit als verborgen risicofactor die vaak niet op voorhand wordt gemeld door bureaus. Bedrijf 4 had eerder een kandidaat die structureel verzuimde wegens drankgerelateerde problemen. Let op: lasogen zijn een gevolg van het niet dragen van PBM\'s, niet van drank.',type:'nogo',nl:'Signalen drankverleden of problematisch gebruik',opts:[
+    {l:'Nee, geen signalen',s:'',v:0,ng:false},
+    {l:'Onduidelijk, niet te beoordelen',s:'',v:0,ng:false},
+    {l:'Ja, signalen aanwezig',s:'Directe no-go',v:0,ng:true}
+  ]},
+  {sec:'No-go check',sc:'#E24B4A',t:'Hoe stabiel is het cv van de kandidaat?',n:'Een job-hopper is in eerste instantie een no-go, tenzij de kandidaat een gedegen verhaal heeft waar jij zelf van overtuigd bent. Bedrijf 3: "8 bazen in 5 jaar en mijn nekharen gaan recht overeind staan." Intern Wim Oosthoek: "Bij een nieuwe klant zou ik een job-hopper minder snel voorstellen, een snelle vertrekker draagt niet bij aan een goede eerste indruk."',type:'nogo',nl:'Instabiel cv zonder overtuigend verhaal',opts:[
+    {l:'Stabiel (1-3 werkgevers, logische opbouw)',s:'',v:0,ng:false},
+    {l:'Meerdere werkgevers, maar goed onderbouwd verhaal — ik ben zelf overtuigd',s:'Jij bent persoonlijk overtuigd van de verklaring',v:0,ng:false,w:true},
+    {l:'Job-hopper zonder overtuigend verhaal',s:'No-go voor zowel bestaande als nieuwe klanten',v:0,ng:true}
+  ]},
+  {sec:'No-go check',sc:'#E24B4A',t:'Hoe reageert de kandidaat op vragen over commitment, toekomst en verblijf in Nederland?',n:'Intern Wim Oosthoek: "Als het voornamelijk gaat over geld schat ik de betrouwbaarheid minder in." Een kandidaat die nergens op doorvraagt en elke baan zou accepteren is een risicosignaal. Dit levert geen hard blok maar een zware penalty op de eindscore.',type:'penalty',opts:[
+    {l:'Sterk, gericht op werk, verblijf en toekomst in Nederland',s:'',v:0,ng:false},
+    {l:'Mix van inhoud en financieel, redelijk evenwichtig',s:'',v:-3,ng:false},
+    {l:'Puur gericht op geld, geen interesse in duurzaamheid',s:'Zware penalty op eindscore (-15 pt)',v:-15,ng:false,w:true}
+  ]},
+  {sec:'Technische validatie',sc:'#185FA5',t:'Is er een TTC testrapportage of gelijkwaardige objectieve bewijslast beschikbaar?',n:'CRM 2025: TTC-geteste lassers behalen 29% retentie tegenover 11% bij niet-getesten. Gemiddelde verblijfsduur getest: 32,5 weken (fase B). Dit is het zwaarst wegende criterium in de tool. Intern Robert Vörgers: "Testen testen testen."',type:'score',mp:15,opts:[
+    {l:'Ja, volledig TTC testrapport beschikbaar',s:'15 punten',v:15,ng:false},
+    {l:'Deels — andere bewijslast (vakschoolrapport, proeflas gepland)',s:'8 punten',v:8,ng:false},
+    {l:'Nee, alleen cv en eigen zeggen van kandidaat',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Technische validatie',sc:'#185FA5',t:'Hoeveel jaar aantoonbare laservaring heeft de kandidaat?',n:'Bedrijf 5: "3-5 jaar is de sweet spot: ze kennen de klappen maar zijn nog hongerig om meters te maken." Meer dan 10 jaar kan risico op verveling betekenen bij eenvoudiger werk. Bedrijf 1: "Ik wil iemand die minimaal 5 jaar werkervaring in het lassen heeft."',type:'score',mp:8,opts:[
+    {l:'3-5 jaar (optimale range)',s:'8 punten',v:8,ng:false},
+    {l:'5-10 jaar (ervaren)',s:'6 punten',v:6,ng:false},
+    {l:'1-3 jaar (basis aanwezig)',s:'4 punten',v:4,ng:false},
+    {l:'Minder dan 1 jaar of onduidelijk',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Technische validatie',sc:'#185FA5',t:'Kan de kandidaat technische tekeningen zelfstandig lezen en werken?',n:'4 van 5 bedrijven benoemen dit als must-have. Bedrijf 4: "Als een lasser een tekening ondersteboven houdt zijn we peperduur schroot aan het produceren." Intern geldt het ook als karakterfilter: Robert Vörgers: "Mensen die meer ontwikkeld zijn in hun vakgebied staan anders in het leven. Dit zie je terug in langdurige plaatsingen."',type:'score',mp:8,opts:[
+    {l:'Ja, volledig zelfstandig en aantoonbaar',s:'8 punten',v:8,ng:false},
+    {l:'Deels, kan het met enige begeleiding',s:'4 punten',v:4,ng:false},
+    {l:'Nee of onduidelijk',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Technische validatie',sc:'#185FA5',t:'Welke lastechnieken beheerst de kandidaat?',n:'Breedte van technieken bepaalt de verkoopbaarheid bij meerdere klanttypen. MIG/MAG is de absolute basis. TIG en meerlaags lassen vergroot het aantal bedrijven waarbij de kandidaat inzetbaar is aanzienlijk. Intern Wim Oosthoek: "Verschillende lassen kunnen is makkelijker om te plaatsen."',type:'score',mp:5,opts:[
+    {l:'Meerdere technieken (bijv. MIG/MAG + TIG + meerlaags)',s:'5 punten',v:5,ng:false},
+    {l:'Twee technieken',s:'3 punten',v:3,ng:false},
+    {l:'Één techniek (basis MIG/MAG)',s:'1 punt',v:1,ng:false},
+    {l:'Onduidelijk of onbekend',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Technische validatie',sc:'#185FA5',t:'Heeft de kandidaat aantoonbare certificaten of sterke praktijkreferenties van vorige werkgevers?',n:'Praktijk weegt zwaarder dan papier (4 van 5 bedrijven zeggen dit expliciet). Bedrijf 4: "Cv\'s geloven wij sowieso niet." Certificaten en referenties ondersteunen de geloofwaardigheid van het profiel en verlagen het risico op verrassingen.',type:'score',mp:4,opts:[
+    {l:'Ja, meerdere of sterke referenties/certificaten aanwezig',s:'4 punten',v:4,ng:false},
+    {l:'Deels aanwezig',s:'2 punten',v:2,ng:false},
+    {l:'Nee of niet te verifiëren',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Communicatie & representativiteit',sc:'#7F77DD',t:'Wat is het niveau van de Engelse taalvaardigheid van de kandidaat?',n:'Sliedrecht-benchmark: Engels is harde eis bij nieuwe prospects. Bedrijf 2: "Als je van twee kanten matig tot gebrekkig Engels spreekt heb je binnen de kortste keren de grootste spraakverwarring." Bedrijf 3: "Bij zware bovenloopkranen kan een taalbarrière tot levensgevaarlijke situaties leiden." Bij bestaande klanten is basis-Engels acceptabel wanneer er al communicatielijnen zijn.',type:'score',mp:12,bp:true,opts:[
+    {l:'Vloeiend, geen communicatiedrempel verwacht',s:'12 punten',v:12,ng:false},
+    {l:'Goed, werkbare communicatie over het werk',s:'9 punten',v:9,ng:false},
+    {l:'Basis, beperkt maar werkbaar',s:'5 punten',v:5,ng:false},
+    {l:'Geen of nauwelijks Engels',s:'0 punten — blokkeert nieuwe prospect advies',v:0,ng:false,bpr:true}
+  ]},
+  {sec:'Communicatie & representativiteit',sc:'#7F77DD',t:'Beschikt de kandidaat over een rijbewijs?',n:'Intern Wim Oosthoek: rijbewijs is expliciete eis voor nieuwe klanten. Bedrijf 3: "Een tijdelijke Pool die niet kwam opdagen omdat het regende en hij op de fiets moest komen, daar heb ik helemaal niks aan." Bij nieuwe prospect krijgt rijbewijs +3 bonuspunten: logistiek zelfstandig, makkelijker in te plannen en vergroot groeipotentieel richting overname.',type:'score',mp:8,rb:true,opts:[
+    {l:'Ja, rijbewijs aanwezig',s:'8 punten (+3 bonus bij nieuwe prospect)',v:8,ng:false},
+    {l:'Nee, geen rijbewijs',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Communicatie & representativiteit',sc:'#7F77DD',t:'Hoe was de algehele uitstraling en presentatie van de kandidaat?',n:'Robert Vörgers: "Hoe die uitkijkt, hoe die erbij zit — een vermoeid uitziend persoon die weinig weet te vertellen is een red flag." Bedrijf 4: "Als je hier op sollicitatie komt moet je een frisse indruk afgeven." Beoordeel op basis van een fysiek gesprek of foto in het cv. Bij een puur telefonisch gesprek is dit criterium moeilijker te beoordelen — kies dan voor redelijk als er geen signalen zijn.',type:'score',mp:7,opts:[
+    {l:'Verzorgd, professionele en frisse indruk',s:'7 punten',v:7,ng:false},
+    {l:'Redelijk, geen bijzonderheden',s:'4 punten',v:4,ng:false},
+    {l:'Onverzorgd, vermoeid of zorgwekkende indruk',s:'0 punten',v:0,ng:false,w:true}
+  ]},
+  {sec:'Communicatie & representativiteit',sc:'#7F77DD',t:'Zijn er foto\'s of beeldmateriaal van het laswerk van de kandidaat beschikbaar om mee te sturen naar een klant?',n:'Sliedrecht-benchmark: het standaard meesturen van beeldmateriaal van het laswerk is een van de drie punten waarop Sliedrecht voorloopt op Almelo. Foto\'s van laswerk geven de klant een concreet en visueel beeld van de kwaliteit en uitvoering, nog voordat een proeflas plaatsvindt. Dit verlaagt de drempel voor een klant om iemand uit te nodigen.',type:'score',mp:5,opts:[
+    {l:'Ja, foto\'s van laswerk aanwezig in het dossier',s:'5 punten',v:5,ng:false},
+    {l:'Deels, cv aanwezig maar geen beeldmateriaal van werk',s:'3 punten',v:3,ng:false},
+    {l:'Nee, geen beeldmateriaal beschikbaar',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Communicatie & representativiteit',sc:'#7F77DD',t:'Is de kandidaat al in Nederland en wat is de indruk van de situatie?',n:'Positief: kandidaat kan direct meegenomen worden naar een testdag. Negatief: zorgwekkende financiële of persoonlijke situatie. Robert Vörgers: "Vaak geen goed teken als ze nog geen 200 euro op de rekening hebben voor de terugreis." Sliedrecht filtert strenger op kandidaten die al in Nederland zitten omdat dit regelmatig wijst op eerdere mislukkingen bij andere werkgevers.',type:'score',mp:3,opts:[
+    {l:'Ja, in Nederland met duidelijk goede reden (stabiel, testdag mogelijk)',s:'3 punten',v:3,ng:false},
+    {l:'Nee, nog in thuisland (standaard situatie)',s:'2 punten',v:2,ng:false},
+    {l:'Ja, maar met onduidelijke of zorgwekkende omstandigheden',s:'0 punten',v:0,ng:false,w:true}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Wat is het toekomstperspectief van de kandidaat in Nederland?',n:'Robert Vörgers: "Is er een goed toekomstbeeld? Wil hij iets permanent opbouwen in NL?" Dit is de sterkste voorspeller van langdurige plaatsing en daarmee de meest kritieke factor voor nieuwe klanten. Bedrijf 4 heeft op moment van interview twee Hongaarse lassers die al vier jaar werken en in een overnameprocedure zitten.',type:'score',mp:7,opts:[
+    {l:'Wil iets permanent opbouwen in Nederland',s:'7 punten',v:7,ng:false},
+    {l:'Projectmatig maar voor een langere periode (6+ maanden)',s:'4 punten',v:4,ng:false},
+    {l:'Onduidelijk, kortetermijn of puur financieel gemotiveerd',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Wat is de gezins- en thuissituatie van de kandidaat?',n:'Bedrijf 2: "Als iemand een gezin heeft waar hij voor moet zorgen zijn dat over het algemeen de meer gedreven jongens." Intern Robert Vörgers: thuissituatie wordt actief uitgevraagd als indicator voor no-show risico. Een kandidaat met gezin en binding heeft minder kans op ad-hoc vertrek.',type:'score',mp:5,opts:[
+    {l:'Stabiel (gezin in NL of sterke binding met duidelijk plan)',s:'5 punten',v:5,ng:false},
+    {l:'Neutraal of niet volledig duidelijk',s:'2 punten',v:2,ng:false},
+    {l:'Instabiel, geen binding of zorgwekkend beeld',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Welke vragen stelde de kandidaat tijdens het gesprek?',n:'Wim Oosthoek: "Als het voornamelijk gaat over geld schat ik de betrouwbaarheid minder in." Inhoudelijke vragen over werk, verblijf en toekomst zijn een positief signaal van oprechte interesse. Rowdy Bouchier: "Houding en of de vragen werk inhoudelijk gaan of alleen maar om het financiële plaatje."',type:'score',mp:4,opts:[
+    {l:'Inhoudelijk gericht op werk, verblijf en toekomst',s:'4 punten',v:4,ng:false},
+    {l:'Mix van inhoud en financieel, evenwichtig',s:'2 punten',v:2,ng:false},
+    {l:'Puur gericht op salaris en kortetermijn',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Beschikt de kandidaat over extra certificaten of aanvullende vaardigheden?',n:'3 van 5 bedrijven zien een bovenloopkraan of heftruckcertificaat als grote meerwaarde. Bedrijf 5: "Een certificaat voor de bovenloopkraan is een enorme plus omdat we met zware constructies werken." Vergroot de zelfstandige inzetbaarheid en verlaagt de begeleidingslast voor de klant, wat de kernbehoefte in de markt is.',type:'score',mp:4,opts:[
+    {l:'Meerdere extra certificaten (kraan, heftruck, VCA, aluminium etc.)',s:'4 punten',v:4,ng:false},
+    {l:'Één extra certificaat',s:'2 punten',v:2,ng:false},
+    {l:'Geen extra certificaten',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Hoe betrouwbaar en consistent komt de kandidaat over op basis van het totale gesprek?',n:'Rowdy Bouchier: "Ik vraag vooral door bij antwoorden." Een consistente kandidaat geeft overal dezelfde antwoorden en toont oprechte interesse. Bedrijf 5: "Veel mensen zetten zelfstandig werken op het cv maar op het moment dat ze alleen worden gelaten krijgen ze er geen balk aan." Let op tegenstrijdigheden tussen verhaal, cv en gedrag.',type:'score',mp:2,opts:[
+    {l:'Sterk vertrouwen, consistent en oprecht verhaal',s:'2 punten',v:2,ng:false},
+    {l:'Redelijk vertrouwen, kleine twijfels maar acceptabel',s:'1 punt',v:1,ng:false},
+    {l:'Twijfelachtig, inconsistente of vage antwoorden',s:'0 punten',v:0,ng:false}
+  ]},
+  {sec:'Sociale stabiliteit & toekomst',sc:'#1D9E75',t:'Is de kandidaat bereid aanvullende trainingen of certificeringen te volgen indien nodig?',n:'Bedrijf 1: "Als iemand geen TIG niveau 2 heeft maar wel wat TIG-ervaring wil ik kijken of hij bereid is een cursus te volgen." Bedrijf 4: "Iemand certificeren kost een paar dagen maar als iemand daardoor langer blijft is het goed." Intern: "Niks houdt je hier voor tegen. Het is nooit verkeerd." Bereidheid tot bijscholing is een indicator voor groeipotentieel en binding.',type:'score',mp:3,opts:[
+    {l:'Ja, toont actieve bereidheid tot ontwikkeling',s:'3 punten',v:3,ng:false},
+    {l:'Neutraal, geen uitgesproken mening',s:'1 punt',v:1,ng:false},
+    {l:'Nee of defensief over bijscholen',s:'0 punten',v:0,ng:false}
+  ]}
+];
+
+let cur=0,ans=new Array(Q.length).fill(null),ngFlags=[],blockProsp=false,pen=0;
+
+function scStart(){
+  document.getElementById('sc-intro').classList.remove('active');
+  document.getElementById('sc-qs').classList.add('active');
+  scRender();
+}
+
+function scRender(){
+  const q=Q[cur];
+  document.getElementById('sc-sec').textContent=q.sec;
+  document.getElementById('sc-sec').style.color=q.sc;
+  document.getElementById('sc-cnt').textContent='Vraag '+(cur+1)+' van '+Q.length;
+  document.getElementById('sc-pf').style.width=(((cur+1)/Q.length)*100)+'%';
+  document.getElementById('sc-prev').style.visibility=cur===0?'hidden':'visible';
+  const nb=document.getElementById('sc-next');
+  nb.textContent=cur===Q.length-1?'Bekijk resultaat':'Volgende';
+  nb.disabled=ans[cur]===null;
+
+  let html='<div class="sc-card"><div class="sc-q-text">'+q.t+'</div>';
+  if(q.n) html+='<div class="sc-q-note">'+q.n+'</div>';
+  html+='<div class="sc-opts">';
+  q.opts.forEach((o,i)=>{
+    let cls='sc-opt';
+    if(ans[cur]===i){
+      if(o.ng) cls+=' sel-nogo';
+      else if(o.w) cls+=' sel-warn';
+      else cls+=' sel';
+    }
+    html+='<div class="'+cls+'" onclick="scSel('+i+')"><input type="radio" name="q'+cur+'" '+(ans[cur]===i?'checked':'')+' onchange="scSel('+i+')"><div><div class="sc-opt-lbl">'+o.l+'</div>'+(o.s?'<div class="sc-opt-sub">'+o.s+'</div>':'')+'</div></div>';
+  });
+  html+='</div></div>';
+  document.getElementById('sc-qc').innerHTML=html;
+}
+
+function scSel(i){ans[cur]=i;document.getElementById('sc-next').disabled=false;scRender();}
+function scNext(){if(cur<Q.length-1){cur++;scRender();}else scResult();}
+function scPrev(){if(cur>0){cur--;scRender();}}
+
+function scResult(){
+  document.getElementById('sc-qs').classList.remove('active');
+  document.getElementById('sc-res').classList.add('active');
+
+  ngFlags=[];blockProsp=false;pen=0;
+  let s2=0,s3=0,s4=0,rbBonus=0,warns=[];
+
+  Q.forEach((q,i)=>{
+    const ai=ans[i]; if(ai===null) return;
+    const o=q.opts[ai];
+    if(o.ng) ngFlags.push(q.nl||q.sec);
+    if(o.bpr) blockProsp=true;
+    if(q.type==='penalty') pen+=o.v;
+    else if(q.type==='score'){
+      if(q.sec==='Technische validatie') s2+=o.v;
+      else if(q.sec==='Communicatie & representativiteit'){s3+=o.v; if(q.rb&&o.v===8) rbBonus=3;}
+      else if(q.sec==='Sociale stabiliteit & toekomst') s4+=o.v;
+    }
+    if(o.w) warns.push({l:o.l});
+  });
+
+  const base=s2+s3+s4;
+  const total=Math.max(0,base+pen);
+  const p2=Math.round((s2/40)*100);
+  const p3=Math.round((s3/35)*100);
+  const p4=Math.round((s4/25)*100);
+  const hasNG=ngFlags.length>0;
+
+  let adv,aclr,abg,albl;
+  if(hasNG){
+    adv='Niet voorstellen';aclr='#A32D2D';abg='#FCEBEB';
+    albl='Er zijn één of meer no-go factoren gedetecteerd. De kandidaat wordt niet voorgesteld, ongeacht de overige scores.';
+  } else if(total<50||s2<20){
+    adv='Niet voorstellen';aclr='#A32D2D';abg='#FCEBEB';
+    albl=s2<20?'De technische validatie is onvoldoende (minder dan 50% van de technische punten). Techniek is de absolute basis.':'De totaalscore is te laag voor een verantwoorde voorstelling aan een klant.';
+  } else if(total<70||blockProsp||s2<24){
+    adv='Bestaande klant';aclr='#854F0B';abg='#FAEEDA';
+    albl=blockProsp?'De Engelse taalvaardigheid is onvoldoende voor een nieuwe prospect. De kandidaat kan worden voorgesteld bij een bestaande klant waar al communicatielijnen bestaan.':'De kandidaat voldoet aan de basisvereisten voor plaatsing bij een bestaande klant, maar haalt de drempel voor een nieuwe prospect nog niet.';
+  } else {
+    const ps=total+rbBonus;
+    adv='Nieuwe prospect';aclr='#085041';abg='#E1F5EE';
+    albl='De kandidaat voldoet aan alle criteria voor voorstelling bij een nieuwe prospect (eindscore: '+ps+(rbBonus?', inclusief +3 rijbewijs bonus':'')+'). Zorg dat het volledige dossier inclusief beeldmateriaal van het laswerk compleet is.';
+  }
+
+  const tclr=total>=70?'#1D9E75':total>=50?'#BA7517':'#E24B4A';
+
+  let ngHtml=ngFlags.map(f=>'<div class="sc-nogo-flag"><div class="sc-dot" style="background:#E24B4A"></div><div style="font-size:12px;color:#501313;font-weight:500">'+f+'</div></div>').join('');
+  let wHtml=warns.map(w=>'<div class="sc-warn-flag"><div class="sc-dot" style="background:#BA7517"></div><div><div style="font-size:11px;font-weight:500;color:#633806">Aandachtspunt</div><div style="font-size:11px;color:#633806">'+w.l+'</div></div></div>').join('');
+
+  function bar(pct,lbl,sc,mx,pctMin){
+    const c=pct>=pctMin?'#1D9E75':pct>=40?'#BA7517':'#E24B4A';
+    return '<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><div style="font-size:11px;color:var(--color-text-secondary)">'+lbl+'</div><div style="font-size:11px;font-weight:500;color:'+(pct>=pctMin?'#1D9E75':'#E24B4A')+'">'+sc+'/'+mx+'</div></div><div class="sc-bar"><div class="sc-bar-fill" style="width:'+pct+'%;background:'+c+'"></div></div></div>';
+  }
+
+  document.getElementById('sc-rc').innerHTML=
+    '<div style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:16px">Beoordelingsresultaat</div>'+
+    '<div style="background:'+abg+';border:1.5px solid '+aclr+';border-radius:12px;padding:20px;text-align:center;margin-bottom:16px">'+
+    '<div style="font-size:28px;font-weight:500;color:'+aclr+';margin-bottom:6px">'+adv+'</div>'+
+    '<div style="font-size:12px;color:'+aclr+';line-height:1.5;opacity:.9">'+albl+'</div></div>'+
+    (ngHtml?'<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">No-go factoren</div>'+ngHtml+'</div>':'')+
+    (wHtml?'<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Aandachtspunten</div>'+wHtml+'</div>':'')+
+    '<div style="background:var(--color-background-secondary);border-radius:12px;padding:16px;margin-bottom:12px">'+
+    '<div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px">Scoreoverzicht</div>'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div style="font-size:12px;color:var(--color-text-secondary)">Totaalscore</div><div style="font-size:18px;font-weight:500;color:'+tclr+'">'+total+'<span style="font-size:11px;color:var(--color-text-tertiary)">/100</span></div></div>'+
+    '<div class="sc-bar" style="margin-bottom:14px"><div class="sc-bar-fill" style="width:'+Math.min(total,100)+'%;background:'+tclr+';height:8px;border-radius:4px"></div></div>'+
+    bar(p2,'Technische validatie (weging 40%)',s2,40,60)+
+    bar(p3,'Communicatie & representativiteit (weging 35%)',s3,35,50)+
+    bar(p4,'Sociale stabiliteit & toekomst (weging 25%)',s4,25,40)+
+    (rbBonus?'<div style="font-size:10px;color:var(--color-text-tertiary);margin-top:4px">+3 rijbewijs bonus meegerekend bij nieuwe prospect advies</div>':'')+
+    '<div style="margin-top:10px;padding-top:10px;border-top:.5px solid var(--color-border-tertiary);font-size:10px;color:var(--color-text-tertiary)">Drempelwaarden: Niet voorstellen &lt;50 pt of technisch &lt;50% | Bestaande klant 50-69 pt | Nieuwe prospect 70+ pt (technisch minimaal 60%)</div>'+
+    '</div>'+
+    '<button class="sc-btn" onclick="scReset()" style="width:100%">Nieuwe beoordeling starten</button>';
+}
+
+function scReset(){
+  cur=0;ans=new Array(Q.length).fill(null);ngFlags=[];blockProsp=false;pen=0;
+  document.getElementById('sc-res').classList.remove('active');
+  document.getElementById('sc-qs').classList.add('active');
+  scRender();
+}
+</script>
